@@ -1,9 +1,8 @@
 name: Compile Go Program for Android ARMv7
 
 on:
-  push:
-    branches:
-      - main
+
+  workflow_dispatch:
 
 jobs:
   build:
