@@ -1,31 +1,25 @@
 name: release binaries
 
+
+# .github/workflows/release.yaml
+
 on:
   release:
     types: [created]
 
+permissions:
+    contents: write
+    packages: write
+
 jobs:
-  release-binaries:
-    name: release binaries linux/windows/android
+  release-linux-amd64:
+    name: release android
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        goos: [linux, windows, android]
-        goarch: ["386", amd64, arm64]
-        exclude:
-          - goarch: 386
-            goos: android
-          - goarch: amd64
-            goos: android
-          - goarch: arm64
-            goos: windows
     steps:
-    - uses: actions/checkout@v2
-    - uses: wangyoucao577/go-release-action@v1.48
+    - uses: actions/checkout@v4
+    - uses: wangyoucao577/go-release-action@v1
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        goos: ${{ matrix.goos }}
-        goarch: ${{ matrix.goarch }}
-        goversion: "1.22.0"
-        ldflags: "-w -s"
-        md5sum: FALSE
+        goos: android
+        goarch: arm
+
