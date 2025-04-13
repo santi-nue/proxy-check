@@ -22,4 +22,6 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         goos: android
         goarch: arm
+        goarm: 7
+        
 
