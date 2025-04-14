@@ -1,0 +1,33 @@
+name: Build Go for Android ARMv7
+
+on:
+  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.20'
+
+    - name: Install Android NDK
+      run: |
+        sudo apt-get update && sudo apt-get install -y android-sdk google-android-ndk-installer
+
+    - name: Build Go binary for Android ARMv7
+      run: |
+        export NDK_TOOLCHAIN=/usr/lib/android-sdk/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin
+        export CC=$NDK_TOOLCHAIN/armv7a-linux-androideabi21-clang
+        CGO_ENABLED=1 GOOS=android GOARCH=arm GOARM=7 go build -o app_binary proxy-check.go
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: android-armv7-binary
+        path: app_binary
